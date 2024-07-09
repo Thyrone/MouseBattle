@@ -23,7 +23,7 @@ public class SpellManager : MonoBehaviour
 
     private void Update()
     {
-        Debug.Log(Input.mousePosition);
+        //Debug.Log(Input.mousePosition);
         if (Input.GetKeyDown(KeyCode.S))
         {
             // SlowMooseEffect(slowFactor, 3f);
@@ -70,10 +70,11 @@ public class SpellManager : MonoBehaviour
 
     IEnumerator MoveLogicCrt()
     {
-        yield return SlowMooseEffectEnum(slowFactor, 5);
+        yield return InvertMouse(5);
         yield return null;
-        //yield return MoveCursorToDirectionCrt(Vector3.left, 150, 5);
-        //yield return null;
+        yield return MoveCursorToDirectionCrt(Vector3.left, 150, 5);
+        yield return null;
+        yield return SpeedUp(1.1f, 5);
         //yield return MoveCursorToDirectionCrt(Vector3.right, 350, 5);
 
 
@@ -92,7 +93,7 @@ public class SpellManager : MonoBehaviour
         }
     }
 
-    private IEnumerator SlowMooseEffectEnum(float speed, float movementTime)
+    private IEnumerator SpeedUp(float speed, float movementTime)
     {
 
         float startTime = Time.time;
@@ -100,11 +101,35 @@ public class SpellManager : MonoBehaviour
         while (Time.time < startTime + movementTime)
         {
             Debug.Log("Direction");
-            UnityEngine.Vector2 newMousePosition = new Vector2(Input.mousePosition.x * speed
-            , Input.mousePosition.y * speed);
+            UnityEngine.Vector2 newMousePosition = new Vector2(
+            Input.mousePosition.x + (Mouse.current.delta.ReadUnprocessedValue().x * speed),
+            Input.mousePosition.y + (Mouse.current.delta.ReadUnprocessedValue().y * speed));
+
+            /* UnityEngine.Vector2 newMousePosition = new Vector2(Input.mousePosition.x, Input.mousePosition.y) +
+             (Time.deltaTime * Mouse.current.delta.ReadUnprocessedValue() * speed);*/
+
             Mouse.current.WarpCursorPosition(newMousePosition);
             yield return null;
         }
     }
 
+    private IEnumerator InvertMouse(float movementTime)
+    {
+
+        float startTime = Time.time;
+
+        while (Time.time < startTime + movementTime)
+        {
+            Debug.Log("Direction");
+            UnityEngine.Vector2 newMousePosition = new Vector2(
+            Input.mousePosition.x - (Mouse.current.delta.ReadUnprocessedValue().x),
+            Input.mousePosition.y - (Mouse.current.delta.ReadUnprocessedValue().y));
+
+            /* UnityEngine.Vector2 newMousePosition = new Vector2(Input.mousePosition.x, Input.mousePosition.y) +
+             (Time.deltaTime * Mouse.current.delta.ReadUnprocessedValue() * speed);*/
+
+            Mouse.current.WarpCursorPosition(newMousePosition);
+            yield return null;
+        }
+    }
 }
