@@ -4,7 +4,7 @@ using UnityEngine;
 using TMPro;
 
 
-public enum Type { Player1, Player2 };
+public enum Type { Player1, Player2, Both };
 
 public class ZoneManager : MonoBehaviour
 {
@@ -21,6 +21,7 @@ public class ZoneManager : MonoBehaviour
     private Camera _camera;
 
     public TMP_Text VictoryText;
+
 
     private void Awake()
     {
@@ -47,7 +48,7 @@ public class ZoneManager : MonoBehaviour
     {
         if (ZoneType == Type.Player1)
         {
-            ZonePosition.position += Direction * Speed * Time.deltaTime ;
+            ZonePosition.position += Direction * Speed * Time.deltaTime;
         }
 
         if (ZoneType == Type.Player2)
@@ -72,6 +73,11 @@ public class ZoneManager : MonoBehaviour
             VictoryText.text = "Victoire des Jaunes !";
             Time.timeScale = 0;
         }
+    }
+
+    public void MoveZoneBonus(int _bonusMovement)
+    {
+        ZonePosition.position += Direction * _bonusMovement;
     }
 
 

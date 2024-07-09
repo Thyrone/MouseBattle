@@ -47,7 +47,7 @@ public class DropItems : MonoBehaviour
         float spawnX = UnityEngine.Random.Range(screenLeft, screenRight);
         Vector3 spawnPosition = new Vector3(spawnX, transform.position.y, 0);
 
-        GameObject spawnedObject = Instantiate(ItemsToDorp[GetRandomSpawn()].gameObject, spawnPosition, Quaternion.identity);
+        Instantiate(ItemsToDorp[GetRandomSpawn()].gameObject, spawnPosition, Quaternion.identity);
     }
     public int GetRandomSpawn()
     {

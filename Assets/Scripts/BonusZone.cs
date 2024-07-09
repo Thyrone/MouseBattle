@@ -4,15 +4,28 @@ using UnityEngine;
 
 public class BonusZone : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    public int BonusMovement;
+
+    public int spawnRate;
+    private void OnMouseOver()
     {
-        
+        if (Input.GetMouseButtonDown(0))
+        {
+            ZoneManager.instance.MoveZoneBonus(BonusMovement);
+        }
+        if (Input.GetMouseButtonDown(1))
+        {
+            ZoneManager.instance.MoveZoneBonus(BonusMovement);
+        }
     }
 
-    // Update is called once per frame
-    void Update()
+    private void OnMouseEnter()
     {
-        
+        SpellManager.instance.AddNbOver(1);
     }
+    private void OnMouseExit()
+    {
+        SpellManager.instance.AddNbOver(-1);
+    }
+
 }

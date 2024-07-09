@@ -99,6 +99,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1b7d5bce5432b5f418f6b65c3225baa3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  spell: 3
   spawnRate: 30
   speed: 1.5
 --- !u!50 &5999455812174120268

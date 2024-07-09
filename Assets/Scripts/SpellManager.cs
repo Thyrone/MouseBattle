@@ -1,28 +1,72 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.UI;
 
 
 public enum SpellName
 {
-    SpawnWall, SlowMoose, BumpingBall, ReversePosition
+    None, SpawnWall, SlowMoose, InvertMouse, ReversePosition, SpeedUp,
+    LeftDirection, RightDirection, UpDirection, DownDirection,
+    UpLeftDirection, UpRightDirection, DownLeftDirection, DownRightDirection
 }
 
 public class SpellManager : MonoBehaviour
 {
 
     public float slowFactor;
+    public Image ImageLeftInventory;
+    public Image ImageRightInventory;
     public SpellName LeftClickInventory;
     public SpellName RightClickInventory;
 
+
+    public static SpellManager instance;
+
+    private int nbOver = 0;
+
+    private Sprite emptyRightSprite;
+    private Sprite emptyRLeftSprite;
+    private void Awake()
+    {
+        if (instance != null && instance != this)
+        {
+            Destroy(this.gameObject);
+            return;
+        }
+        else
+        {
+            instance = this;
+        }
+    }
+
+    public void AddNbOver(int nbToAdd)
+    {
+        nbOver += nbToAdd;
+    }
     private void Start()
     {
+        Cursor.lockState = CursorLockMode.Confined;
         Mouse.current.WarpCursorPosition(Input.mousePosition);
+        emptyRightSprite = ImageRightInventory.sprite;
+        emptyRLeftSprite = ImageLeftInventory.sprite;
     }
 
     private void Update()
     {
+        if (Input.GetMouseButtonDown(0))
+        {
+            LaunchSpeel(Type.Player1);
+
+        }
+
+        if (Input.GetMouseButtonDown(1))
+        {
+            LaunchSpeel(Type.Player2);
+
+        }
         //Debug.Log(Input.mousePosition);
         if (Input.GetKeyDown(KeyCode.S))
         {
@@ -33,10 +77,49 @@ public class SpellManager : MonoBehaviour
             StartCoroutine(MoveLogicCrt());
         }
         Debug.Log("Slow");
-
-
     }
 
+
+    public void LaunchSpeel(Type _player)
+    {
+        if (nbOver <= 0)
+        {
+            if (_player == Type.Player1)
+            {
+                StartCoroutine(LauchEnum(LeftClickInventory));
+                LeftClickInventory = SpellName.None;
+                ImageLeftInventory.sprite = emptyRLeftSprite;
+                ImageLeftInventory.SetNativeSize();
+
+            }
+
+            if (_player == Type.Player2)
+            {
+                StartCoroutine(LauchEnum(RightClickInventory));
+                RightClickInventory = SpellName.None;
+                ImageRightInventory.sprite = emptyRightSprite;
+                ImageRightInventory.SetNativeSize();
+
+            }
+
+        }
+    }
+
+    public void SetInvotory(SpellName _spellToSet, Type _player, Sprite _spriteSpell)
+    {
+        if (_player == Type.Player1)
+        {
+            LeftClickInventory = _spellToSet;
+            ImageLeftInventory.sprite = _spriteSpell;
+            ImageLeftInventory.SetNativeSize();
+        }
+        if (_player == Type.Player2)
+        {
+            RightClickInventory = _spellToSet;
+            ImageRightInventory.sprite = _spriteSpell;
+            ImageRightInventory.SetNativeSize();
+        }
+    }
     private void SlowMooseEffect(float speed, float movementTime)
     {
         float startTime = Time.time;
@@ -76,10 +159,30 @@ public class SpellManager : MonoBehaviour
         yield return null;
         yield return SpeedUp(1.1f, 5);
         //yield return MoveCursorToDirectionCrt(Vector3.right, 350, 5);
-
-
     }
 
+    IEnumerator LauchEnum(SpellName _spell)
+    {
+        switch (_spell)
+        {
+            case SpellName.InvertMouse:
+                yield return InvertMouse(5);
+                yield return null;
+                break;
+
+            case SpellName.SpeedUp:
+                yield return SpeedUp(1.1f, 5);
+                yield return null;
+                break;
+
+            case SpellName.LeftDirection:
+                yield return MoveCursorToDirectionCrt(Vector3.left, 150, 5);
+                yield return null;
+                break;
+
+        }
+
+    }
     private IEnumerator MoveCursorToDirectionCrt(UnityEngine.Vector3 direction, float speed, float movementTime)
     {
         float startTime = Time.time;
