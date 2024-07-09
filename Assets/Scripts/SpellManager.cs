@@ -12,7 +12,7 @@ public enum SpellName
 public class SpellManager : MonoBehaviour
 {
 
-    private float slowFactor;
+    public float slowFactor;
     public SpellName LeftClickInventory;
     public SpellName RightClickInventory;
 
@@ -23,49 +23,21 @@ public class SpellManager : MonoBehaviour
 
     private void Update()
     {
+        Debug.Log(Input.mousePosition);
         if (Input.GetKeyDown(KeyCode.S))
         {
-            StartCoroutine(SlowMooseEffect(slowFactor, 3f));
+            // SlowMooseEffect(slowFactor, 3f);
         }
         if (Input.GetKeyDown(KeyCode.I))
         {
             StartCoroutine(MoveLogicCrt());
-
         }
+        Debug.Log("Slow");
+
 
     }
 
-    private void SlowMooseEffect()
-    {
-    }
-
-    public void SetslowFactor(float _slowfactor)
-    {
-        slowFactor = _slowfactor;
-    }
-
-
-    IEnumerator MoveLogicCrt()
-    {
-        yield return MoveCursorToDirectionCrt(Vector3.left, 150, 5);
-        yield return null;
-        yield return MoveCursorToDirectionCrt(Vector3.right, 350, 5);
-    }
-
-    private IEnumerator MoveCursorToDirectionCrt(UnityEngine.Vector3 direction, float speed, float movementTime)
-    {
-        float startTime = Time.time;
-
-        while (Time.time < startTime + movementTime)
-        {
-            Debug.Log("Direction");
-            UnityEngine.Vector2 newMousePosition = Input.mousePosition + (Time.deltaTime * direction * speed);
-            Mouse.current.WarpCursorPosition(newMousePosition);
-            yield return null;
-        }
-    }
-
-    private IEnumerator SlowMooseEffect(float speed, float movementTime)
+    private void SlowMooseEffect(float speed, float movementTime)
     {
         float startTime = Time.time;
 
@@ -86,7 +58,51 @@ public class SpellManager : MonoBehaviour
 
             // Déplacez le curseur à la nouvelle position
             Mouse.current.WarpCursorPosition(newPosition);
+        }
 
+    }
+
+    public void SetslowFactor(float _slowfactor)
+    {
+        slowFactor = _slowfactor;
+    }
+
+
+    IEnumerator MoveLogicCrt()
+    {
+        yield return SlowMooseEffectEnum(slowFactor, 5);
+        yield return null;
+        //yield return MoveCursorToDirectionCrt(Vector3.left, 150, 5);
+        //yield return null;
+        //yield return MoveCursorToDirectionCrt(Vector3.right, 350, 5);
+
+
+    }
+
+    private IEnumerator MoveCursorToDirectionCrt(UnityEngine.Vector3 direction, float speed, float movementTime)
+    {
+        float startTime = Time.time;
+
+        while (Time.time < startTime + movementTime)
+        {
+            Debug.Log("Direction");
+            UnityEngine.Vector2 newMousePosition = Input.mousePosition + (Time.deltaTime * direction * speed);
+            Mouse.current.WarpCursorPosition(newMousePosition);
+            yield return null;
+        }
+    }
+
+    private IEnumerator SlowMooseEffectEnum(float speed, float movementTime)
+    {
+
+        float startTime = Time.time;
+
+        while (Time.time < startTime + movementTime)
+        {
+            Debug.Log("Direction");
+            UnityEngine.Vector2 newMousePosition = new Vector2(Input.mousePosition.x * speed
+            , Input.mousePosition.y * speed);
+            Mouse.current.WarpCursorPosition(newMousePosition);
             yield return null;
         }
     }
