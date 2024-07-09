@@ -16,13 +16,12 @@ public enum SpellName
 public class SpellManager : MonoBehaviour
 {
 
-    public float slowFactor;
     public Image ImageLeftInventory;
     public Image ImageRightInventory;
     public SpellName LeftClickInventory;
     public SpellName RightClickInventory;
 
-
+    private bool EffectActualyPlay = false;
     public static SpellManager instance;
 
     private int nbOver = 0;
@@ -52,6 +51,8 @@ public class SpellManager : MonoBehaviour
         Mouse.current.WarpCursorPosition(Input.mousePosition);
         emptyRightSprite = ImageRightInventory.sprite;
         emptyRLeftSprite = ImageLeftInventory.sprite;
+        ImageLeftInventory.GetComponent<Animator>().SetTrigger("Change");
+        ImageRightInventory.GetComponent<Animator>().SetTrigger("Change");
     }
 
     private void Update()
@@ -82,24 +83,27 @@ public class SpellManager : MonoBehaviour
 
     public void LaunchSpeel(Type _player)
     {
-        if (nbOver <= 0)
+        if (nbOver <= 0 && !EffectActualyPlay)
         {
-            if (_player == Type.Player1)
+            if (_player == Type.Player1 && LeftClickInventory != SpellName.None)
             {
                 StartCoroutine(LauchEnum(LeftClickInventory));
+                UIManager.instance.SetBackgroundIndicator(ImageLeftInventory.sprite);
                 LeftClickInventory = SpellName.None;
                 ImageLeftInventory.sprite = emptyRLeftSprite;
+                ImageLeftInventory.color = Color.white;
                 ImageLeftInventory.SetNativeSize();
 
             }
 
-            if (_player == Type.Player2)
+            if (_player == Type.Player2 && RightClickInventory != SpellName.None)
             {
                 StartCoroutine(LauchEnum(RightClickInventory));
+                UIManager.instance.SetBackgroundIndicator(ImageRightInventory.sprite);
                 RightClickInventory = SpellName.None;
                 ImageRightInventory.sprite = emptyRightSprite;
+                ImageRightInventory.color = Color.white;
                 ImageRightInventory.SetNativeSize();
-
             }
 
         }
@@ -111,13 +115,17 @@ public class SpellManager : MonoBehaviour
         {
             LeftClickInventory = _spellToSet;
             ImageLeftInventory.sprite = _spriteSpell;
+            ImageLeftInventory.color = ZoneManager.instance.Player1Color;
             ImageLeftInventory.SetNativeSize();
+            ImageLeftInventory.GetComponent<Animator>().SetTrigger("Change");
         }
         if (_player == Type.Player2)
         {
             RightClickInventory = _spellToSet;
             ImageRightInventory.sprite = _spriteSpell;
+            ImageRightInventory.color = ZoneManager.instance.Player2Color;
             ImageRightInventory.SetNativeSize();
+            ImageRightInventory.GetComponent<Animator>().SetTrigger("Change");
         }
     }
     private void SlowMooseEffect(float speed, float movementTime)
@@ -143,11 +151,6 @@ public class SpellManager : MonoBehaviour
             Mouse.current.WarpCursorPosition(newPosition);
         }
 
-    }
-
-    public void SetslowFactor(float _slowfactor)
-    {
-        slowFactor = _slowfactor;
     }
 
 
@@ -186,21 +189,23 @@ public class SpellManager : MonoBehaviour
     private IEnumerator MoveCursorToDirectionCrt(UnityEngine.Vector3 direction, float speed, float movementTime)
     {
         float startTime = Time.time;
-
+        EffectActualyPlay = true;
         while (Time.time < startTime + movementTime)
         {
             Debug.Log("Direction");
             UnityEngine.Vector2 newMousePosition = Input.mousePosition + (Time.deltaTime * direction * speed);
             Mouse.current.WarpCursorPosition(newMousePosition);
+            UIManager.instance.FillBackground((Time.time - startTime) / movementTime);
             yield return null;
         }
+        EffectActualyPlay = false;
     }
 
     private IEnumerator SpeedUp(float speed, float movementTime)
     {
 
         float startTime = Time.time;
-
+        EffectActualyPlay = true;
         while (Time.time < startTime + movementTime)
         {
             Debug.Log("Direction");
@@ -212,15 +217,16 @@ public class SpellManager : MonoBehaviour
              (Time.deltaTime * Mouse.current.delta.ReadUnprocessedValue() * speed);*/
 
             Mouse.current.WarpCursorPosition(newMousePosition);
-            yield return null;
+            UIManager.instance.FillBackground((Time.time - startTime) / movementTime); yield return null;
         }
+        EffectActualyPlay = false;
     }
 
     private IEnumerator InvertMouse(float movementTime)
     {
 
         float startTime = Time.time;
-
+        EffectActualyPlay = true;
         while (Time.time < startTime + movementTime)
         {
             Debug.Log("Direction");
@@ -232,7 +238,9 @@ public class SpellManager : MonoBehaviour
              (Time.deltaTime * Mouse.current.delta.ReadUnprocessedValue() * speed);*/
 
             Mouse.current.WarpCursorPosition(newMousePosition);
+            UIManager.instance.FillBackground((Time.time - startTime) / movementTime);
             yield return null;
         }
+        EffectActualyPlay = false;
     }
 }
