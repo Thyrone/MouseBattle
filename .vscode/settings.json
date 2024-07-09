@@ -51,5 +51,5 @@
         "temp/": true,
         "Temp/": true
     },
-    "dotnet.defaultSolution": "MouseBattleGit.sln"
+    "dotnet.defaultSolution": "MouseBattle.sln"
 }
