@@ -17,6 +17,9 @@ public class DropItems : MonoBehaviour
     private List<Item> ItemsToDorp = new List<Item>();
 
     public bool StartBool = false;
+
+    [SerializeField]
+    private float minTimeDrop, maxTimeDrop;
     private float targetTime;
 
     private float screenLeft;
@@ -36,7 +39,7 @@ public class DropItems : MonoBehaviour
             if (targetTime <= 0)
             {
                 DropRandomItems();
-                targetTime = UnityEngine.Random.Range(3, 6);
+                targetTime = UnityEngine.Random.Range(minTimeDrop, maxTimeDrop);
                 //Debug.Log(targetTime);
             }
         }

@@ -16,6 +16,8 @@ public class ZoneManager : MonoBehaviour
 
     public float Speed;
 
+    private float InitialZoneSpeed;
+
     [SerializeField] private float ScreenBorder;
 
     private Camera _camera;
@@ -24,6 +26,15 @@ public class ZoneManager : MonoBehaviour
 
     public Color Player1Color;
     public Color Player2Color;
+
+    private float screenRight, screenLeft;
+
+    public void Start()
+    {
+        screenLeft = Camera.main.ScreenToWorldPoint(new Vector3(0, 0, 0)).x;
+        screenRight = Camera.main.ScreenToWorldPoint(new Vector3(Screen.width, 0, 0)).x;
+        InitialZoneSpeed = Speed;
+    }
 
     private void Awake()
     {
@@ -43,6 +54,7 @@ public class ZoneManager : MonoBehaviour
 
     private void Update()
     {
+        Debug.Log("Zone.Position=" + ZonePosition.position);
         EndGame();
     }
 
@@ -57,27 +69,35 @@ public class ZoneManager : MonoBehaviour
         {
             ZonePosition.position += Direction * Speed * Time.deltaTime;
         }
+
+        Vector2 screenPosition = _camera.WorldToScreenPoint(ZonePosition.position);
+        if (screenPosition.x < Camera.main.pixelWidth * 0.25f || screenPosition.x > Camera.main.pixelWidth * 0.75f)
+        {
+            Speed = InitialZoneSpeed / 2;
+        }
+        else
+        {
+            Speed = InitialZoneSpeed;
+        }
     }
 
     public void EndGame()
     {
         Vector2 screenPosition = _camera.WorldToScreenPoint(ZonePosition.position);
-        if (screenPosition.x > Camera.main.pixelWidth)
+        if (screenPosition.x + ScreenBorder > Camera.main.pixelWidth)
         {
-            Debug.Log("Victoire des bleus !");
-            VictoryText.text = "Victoire des bleus !";
+            VictoryText.text = "Victoire des Jaunes !";
             Time.timeScale = 0;
         }
 
-        if (screenPosition.x <= 0)
+        if (screenPosition.x - ScreenBorder <= 0)
         {
-            Debug.Log("Victoire des Jaunes !");
-            VictoryText.text = "Victoire des Jaunes !";
+            VictoryText.text = "Victoire des Bleus !";
             Time.timeScale = 0;
         }
     }
 
-    public void MoveZoneBonus(int _bonusMovement)
+    public void MoveZoneBonus(float _bonusMovement)
     {
         ZonePosition.position += Direction * _bonusMovement;
     }

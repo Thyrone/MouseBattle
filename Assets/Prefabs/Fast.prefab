@@ -102,8 +102,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1b7d5bce5432b5f418f6b65c3225baa3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spell: 2
-  spriteSpell: {fileID: 21300000, guid: 9d6fe547bd230f745b1b543d565184f1, type: 3}
+  spell: 5
+  spriteSpell: {fileID: 21300000, guid: 38741bfce21952f498e6f0a628c35d93, type: 3}
   spawnRate: 40
   speed: 2
   EventOnClick:
@@ -5025,7 +5025,7 @@ ParticleSystemRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: ed3518eb841a5ef42a0fa6982a2bcbda, type: 2}
+  - {fileID: 2100000, guid: de72c396d9a9afa4196968ab5447be5d, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -5102,7 +5102,7 @@ Transform:
   m_GameObject: {fileID: 6853739335482952918}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.11185511, y: 0.11185511, z: 0.11185511}
+  m_LocalScale: {x: 0.14, y: 0.14, z: 0.14}
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 1810524897612592573}
@@ -5149,7 +5149,7 @@ SpriteRenderer:
   m_SortingLayerID: 1051475923
   m_SortingLayer: 3
   m_SortingOrder: 2
-  m_Sprite: {fileID: 21300000, guid: 9d6fe547bd230f745b1b543d565184f1, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 38741bfce21952f498e6f0a628c35d93, type: 3}
   m_Color: {r: 1, g: 0.74509805, b: 0, a: 1}
   m_FlipX: 0
   m_FlipY: 0

@@ -33,7 +33,7 @@ public class SpawnMult : MonoBehaviour
             if (targetTime <= 0)
             {
                 DropRandomBonus();
-                targetTime = UnityEngine.Random.Range(3, 6);
+                targetTime = UnityEngine.Random.Range(2, 6);
                 //Debug.Log(targetTime);
             }
         }
