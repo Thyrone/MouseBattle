@@ -48,12 +48,12 @@ public class ZoneManager : MonoBehaviour
     {
         if (ZoneType == Type.Player1)
         {
-            ZonePosition.position += Direction * Speed * Time.deltaTime;
+            ZonePosition.position -= Direction * Speed * Time.deltaTime;
         }
 
         if (ZoneType == Type.Player2)
         {
-            ZonePosition.position -= Direction * Speed * Time.deltaTime;
+            ZonePosition.position += Direction * Speed * Time.deltaTime;
         }
     }
 

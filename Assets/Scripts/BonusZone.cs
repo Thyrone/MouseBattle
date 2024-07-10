@@ -12,10 +12,12 @@ public class BonusZone : MonoBehaviour
         if (Input.GetMouseButtonDown(0))
         {
             ZoneManager.instance.MoveZoneBonus(BonusMovement);
+            RemoveBonus();
         }
         if (Input.GetMouseButtonDown(1))
         {
-            ZoneManager.instance.MoveZoneBonus(BonusMovement);
+            ZoneManager.instance.MoveZoneBonus(-BonusMovement);
+            RemoveBonus();
         }
     }
 
@@ -26,6 +28,11 @@ public class BonusZone : MonoBehaviour
     private void OnMouseExit()
     {
         SpellManager.instance.AddNbOver(-1);
+    }
+
+    public void RemoveBonus()
+    {
+        Destroy(gameObject);
     }
 
 }

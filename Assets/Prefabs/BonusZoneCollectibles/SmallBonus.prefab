@@ -46,7 +46,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c23d81ffee21d744da2a8a2fb0c33a50, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  BonusMovement: 15
+  BonusMovement: 7
   spawnRate: 20
 --- !u!212 &-3830444749863494320
 SpriteRenderer:
