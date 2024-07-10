@@ -48,9 +48,9 @@ public class CursorManager : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Space))
         {
+            CenterCursor();
             Debug.Log("Center");
-            objectPosition = Vector3.zero;
-            transform.position = objectPosition;
+
         }
 
         if (Input.GetKeyDown(KeyCode.M))
@@ -82,6 +82,11 @@ public class CursorManager : MonoBehaviour
         // rb.MovePosition(rb.position + objectPosition * Time.deltaTime);
     }
 
+    public void CenterCursor()
+    {
+        objectPosition = Vector3.zero;
+        transform.position = objectPosition;
+    }
     public void SetInitalSpeed()
     {
         speed = initalSpeed;

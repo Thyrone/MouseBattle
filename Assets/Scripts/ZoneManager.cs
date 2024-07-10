@@ -1,7 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using TMPro;
+using UnityEngine.Events;
 
 
 public enum Type { Player1, Player2, Both };
@@ -23,9 +25,11 @@ public class ZoneManager : MonoBehaviour
     private Camera _camera;
 
     public TMP_Text VictoryText;
+    public Image VictoryImage;
 
     public Color Player1Color;
     public Color Player2Color;
+    public UnityEvent winEvent;
 
     private float screenRight, screenLeft;
 
@@ -47,7 +51,7 @@ public class ZoneManager : MonoBehaviour
         {
             instance = this;
         }
-        DontDestroyOnLoad(this.gameObject);
+
 
         _camera = Camera.main;
     }
@@ -84,16 +88,29 @@ public class ZoneManager : MonoBehaviour
     public void EndGame()
     {
         Vector2 screenPosition = _camera.WorldToScreenPoint(ZonePosition.position);
-        if (screenPosition.x + ScreenBorder > Camera.main.pixelWidth)
+        if (screenPosition.x + Camera.main.pixelWidth * 0.05 > Camera.main.pixelWidth)
         {
-            VictoryText.text = "Victoire des Jaunes !";
-            Time.timeScale = 0;
+            VictoryText.text = "Yellow Win !";
+            VictoryImage.color = Player2Color;
+            SoundManager.instance.playVictory_Paul();
+            Cursor.visible = true;
+            Cursor.lockState = CursorLockMode.Confined;
+
+
+            winEvent.Invoke();
+            //Time.timeScale = 0;
         }
 
-        if (screenPosition.x - ScreenBorder <= 0)
+        if (screenPosition.x - Camera.main.pixelWidth * 0.05 <= 0)
         {
-            VictoryText.text = "Victoire des Bleus !";
-            Time.timeScale = 0;
+            VictoryText.text = "Blue Win !";
+            VictoryImage.color = Player1Color;
+            SoundManager.instance.playVictory_Cam();
+            Cursor.visible = true;
+            Cursor.lockState = CursorLockMode.Confined;
+
+            winEvent.Invoke();
+            // Time.timeScale = 0;
         }
     }
 

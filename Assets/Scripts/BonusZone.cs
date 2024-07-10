@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using FMOD;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -26,12 +27,14 @@ public class BonusZone : MonoBehaviour
         {
             if (Input.GetMouseButtonDown(0))
             {
-                ZoneManager.instance.MoveZoneBonus(BonusMovement);
+                ZoneManager.instance.MoveZoneBonus(-BonusMovement);
+                SoundManager.instance.playBonusZone_Paul();
                 Destroy(gameObject);
             }
             if (Input.GetMouseButtonDown(1))
             {
-                ZoneManager.instance.MoveZoneBonus(-BonusMovement);
+                ZoneManager.instance.MoveZoneBonus(BonusMovement);
+                SoundManager.instance.playBonusZone_Cam();
                 Destroy(gameObject);
             }
         }

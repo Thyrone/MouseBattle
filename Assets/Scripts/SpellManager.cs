@@ -136,6 +136,7 @@ public class SpellManager : MonoBehaviour
             ImageLeftInventory.color = ZoneManager.instance.Player1Color;
             ImageLeftInventory.SetNativeSize();
             ImageLeftInventory.GetComponent<Animator>().SetTrigger("Change");
+            SoundManager.instance.playInventory();
         }
         if (_player == Type.Player2)
         {
@@ -144,6 +145,7 @@ public class SpellManager : MonoBehaviour
             ImageRightInventory.color = ZoneManager.instance.Player2Color;
             ImageRightInventory.SetNativeSize();
             ImageRightInventory.GetComponent<Animator>().SetTrigger("Change");
+            SoundManager.instance.playInventory();
         }
     }
 
@@ -154,26 +156,31 @@ public class SpellManager : MonoBehaviour
         switch (_spell)
         {
             case SpellName.InvertMouse:
+                SoundManager.instance.playReverse();
                 yield return InvertMouse(invertTime);
                 yield return null;
                 break;
 
             case SpellName.SpeedUp:
+                SoundManager.instance.playSpeedUp();
                 yield return SpeedModify(speedUpForce, speedUpTime);
                 yield return null;
                 break;
 
             case SpellName.LeftDirection:
+                SoundManager.instance.playMoveLeft();
                 yield return MoveCursorToDirectionCrt(Vector3.left, directionForce, directionTime);
                 yield return null;
                 break;
 
             case SpellName.RightDirection:
+                SoundManager.instance.playMoveRight();
                 yield return MoveCursorToDirectionCrt(Vector3.right, directionForce, directionTime);
                 yield return null;
                 break;
 
             case SpellName.SlowMoose:
+                SoundManager.instance.playSlowDown();
                 yield return SpeedModify(slowDownForce, slowDownTime);
                 yield return null;
                 break;
