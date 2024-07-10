@@ -140,7 +140,7 @@ public class SpellManager : MonoBehaviour
                 break;
 
             case SpellName.LeftDirection:
-                yield return MoveCursorToDirectionCrt(Vector3.left, 150, 5);
+                yield return MoveCursorToDirectionCrt(Vector3.left, 10, 5);
                 yield return null;
                 break;
 
@@ -159,8 +159,9 @@ public class SpellManager : MonoBehaviour
         while (Time.time < startTime + movementTime)
         {
             Debug.Log("Direction");
-            UnityEngine.Vector2 newMousePosition = Input.mousePosition + (Time.deltaTime * direction * speed);
-            Mouse.current.WarpCursorPosition(newMousePosition);
+            UnityEngine.Vector2 newMousePosition = CursorManager.instance.GetCursorPosition()
+             + (Time.deltaTime * direction * speed);
+            CursorManager.instance.SetCursorPosition(newMousePosition);
             UIManager.instance.FillBackground((Time.time - startTime) / movementTime);
             yield return null;
         }

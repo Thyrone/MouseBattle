@@ -44,6 +44,7 @@ public class Item : MonoBehaviour
                 EventOnClick.Invoke();
                 Debug.Log("Pressed right click.");
             }
+            Debug.Log("Cursor in Item");
         }
     }
 

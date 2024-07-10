@@ -80,6 +80,16 @@ public class CursorManager : MonoBehaviour
         invert = _invert;
     }
 
+    public Vector3 GetCursorPosition()
+    {
+        return objectPosition;
+    }
+
+    public void SetCursorPosition(Vector3 _position)
+    {
+        objectPosition = _position;
+    }
+
 
     // Start is called before the first frame update
     /*  void Start()
