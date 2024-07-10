@@ -5,8 +5,81 @@ using UnityEngine.InputSystem;
 
 public class CursorManager : MonoBehaviour
 {
-    public float mouseSpeedFactor = 0.3f;
-    private Vector3 lastMousePosition;
+    public static CursorManager instance;
+
+    private Vector3 objectPosition;
+    public float speed = 0.1f;
+    private float initalSpeed;
+    private bool invert = false;
+    private void Awake()
+    {
+        if (instance != null && instance != this)
+        {
+            Destroy(this.gameObject);
+            return;
+        }
+        else
+        {
+            instance = this;
+        }
+    }
+    void Start()
+    {
+
+        // Cachez le curseur de la souris et verrouillez-le au centre de l'écran
+        Cursor.visible = false;
+        Cursor.lockState = CursorLockMode.Locked;
+
+        initalSpeed = speed;
+        // Initialiser la position de l'objet
+        objectPosition = transform.position;
+
+    }
+
+    void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            Debug.Log("Center");
+            objectPosition = Vector3.zero;
+            transform.position = objectPosition;
+        }
+
+        if (Input.GetKeyDown(KeyCode.M))
+        {
+            Debug.Log("Center");
+            invert = !invert;
+        }
+        // Obtenez le delta de la souris
+        float mouseDeltaX = Input.GetAxis("Mouse X");
+        float mouseDeltaY = Input.GetAxis("Mouse Y");
+
+        if (!invert)
+            // Appliquez le delta à la position de l'objet
+            objectPosition += new Vector3(mouseDeltaX, mouseDeltaY, 0) * speed;
+        else
+            objectPosition += new Vector3(-mouseDeltaX, -mouseDeltaY, 0) * speed;
+
+
+        // Mettez à jour la position de l'objet
+        transform.position = objectPosition;
+    }
+
+    public void SetInitalSpeed()
+    {
+        speed = initalSpeed;
+    }
+
+    public void SetSpeed(float _speed)
+    {
+        speed = _speed;
+    }
+
+    public void SetInvert(bool _invert)
+    {
+        invert = _invert;
+    }
+
 
     // Start is called before the first frame update
     /*  void Start()
@@ -45,7 +118,7 @@ public class CursorManager : MonoBehaviour
 
         Mouse.current.WarpCursorPosition(new Vector3(Input.mousePosition.x, Input.mousePosition.y * 0.1f, 0f));
     }
-*/
+
     private void Start()
     {
         Mouse.current.WarpCursorPosition(Input.mousePosition);
@@ -69,5 +142,5 @@ public class CursorManager : MonoBehaviour
             Mouse.current.WarpCursorPosition(newMousePosition);
             yield return null;
         }
-    }
+    }*/
 }

@@ -47,8 +47,8 @@ public class SpellManager : MonoBehaviour
     }
     private void Start()
     {
-        Cursor.lockState = CursorLockMode.Confined;
-        Mouse.current.WarpCursorPosition(Input.mousePosition);
+        //Cursor.lockState = CursorLockMode.Confined;
+
         emptyRightSprite = ImageRightInventory.sprite;
         emptyRLeftSprite = ImageLeftInventory.sprite;
         ImageLeftInventory.GetComponent<Animator>().SetTrigger("Change");
@@ -60,7 +60,6 @@ public class SpellManager : MonoBehaviour
         if (Input.GetMouseButtonDown(0))
         {
             LaunchSpeel(Type.Player1);
-
         }
 
         if (Input.GetMouseButtonDown(1))
@@ -73,11 +72,6 @@ public class SpellManager : MonoBehaviour
         {
             // SlowMooseEffect(slowFactor, 3f);
         }
-        if (Input.GetKeyDown(KeyCode.I))
-        {
-            StartCoroutine(MoveLogicCrt());
-        }
-        Debug.Log("Slow");
     }
 
 
@@ -128,41 +122,8 @@ public class SpellManager : MonoBehaviour
             ImageRightInventory.GetComponent<Animator>().SetTrigger("Change");
         }
     }
-    private void SlowMooseEffect(float speed, float movementTime)
-    {
-        float startTime = Time.time;
-
-        while (Time.time < startTime + movementTime)
-        {
-            Debug.Log("Slow");
-            // Capturez le mouvement de la souris
-            Vector2 mouseDelta = Mouse.current.delta.ReadValue();
-
-            // Appliquez le facteur de ralentissement
-            Vector2 slowMouseDelta = mouseDelta * speed;
-
-            // Obtenez la position actuelle du curseur
-            Vector2 currentPosition = Mouse.current.position.ReadValue();
-
-            // Calculez la nouvelle position
-            Vector2 newPosition = currentPosition + slowMouseDelta;
-
-            // Déplacez le curseur à la nouvelle position
-            Mouse.current.WarpCursorPosition(newPosition);
-        }
-
-    }
 
 
-    IEnumerator MoveLogicCrt()
-    {
-        yield return InvertMouse(5);
-        yield return null;
-        yield return MoveCursorToDirectionCrt(Vector3.left, 150, 5);
-        yield return null;
-        yield return SpeedUp(1.1f, 5);
-        //yield return MoveCursorToDirectionCrt(Vector3.right, 350, 5);
-    }
 
     IEnumerator LauchEnum(SpellName _spell)
     {
@@ -174,12 +135,17 @@ public class SpellManager : MonoBehaviour
                 break;
 
             case SpellName.SpeedUp:
-                yield return SpeedUp(1.1f, 5);
+                yield return SpeedModify(1.1f, 5);
                 yield return null;
                 break;
 
             case SpellName.LeftDirection:
                 yield return MoveCursorToDirectionCrt(Vector3.left, 150, 5);
+                yield return null;
+                break;
+
+            case SpellName.SlowMoose:
+                yield return SpeedModify(0.01f, 5);
                 yield return null;
                 break;
 
@@ -201,24 +167,17 @@ public class SpellManager : MonoBehaviour
         EffectActualyPlay = false;
     }
 
-    private IEnumerator SpeedUp(float speed, float movementTime)
+    private IEnumerator SpeedModify(float speed, float movementTime)
     {
 
         float startTime = Time.time;
         EffectActualyPlay = true;
         while (Time.time < startTime + movementTime)
         {
-            Debug.Log("Direction");
-            UnityEngine.Vector2 newMousePosition = new Vector2(
-            Input.mousePosition.x + (Mouse.current.delta.ReadUnprocessedValue().x * speed),
-            Input.mousePosition.y + (Mouse.current.delta.ReadUnprocessedValue().y * speed));
-
-            /* UnityEngine.Vector2 newMousePosition = new Vector2(Input.mousePosition.x, Input.mousePosition.y) +
-             (Time.deltaTime * Mouse.current.delta.ReadUnprocessedValue() * speed);*/
-
-            Mouse.current.WarpCursorPosition(newMousePosition);
+            CursorManager.instance.SetSpeed(speed);
             UIManager.instance.FillBackground((Time.time - startTime) / movementTime); yield return null;
         }
+        CursorManager.instance.SetInitalSpeed();
         EffectActualyPlay = false;
     }
 
@@ -229,18 +188,11 @@ public class SpellManager : MonoBehaviour
         EffectActualyPlay = true;
         while (Time.time < startTime + movementTime)
         {
-            Debug.Log("Direction");
-            UnityEngine.Vector2 newMousePosition = new Vector2(
-            Input.mousePosition.x - (Mouse.current.delta.ReadUnprocessedValue().x),
-            Input.mousePosition.y - (Mouse.current.delta.ReadUnprocessedValue().y));
-
-            /* UnityEngine.Vector2 newMousePosition = new Vector2(Input.mousePosition.x, Input.mousePosition.y) +
-             (Time.deltaTime * Mouse.current.delta.ReadUnprocessedValue() * speed);*/
-
-            Mouse.current.WarpCursorPosition(newMousePosition);
+            CursorManager.instance.SetInvert(true);
             UIManager.instance.FillBackground((Time.time - startTime) / movementTime);
             yield return null;
         }
+        CursorManager.instance.SetInvert(false);
         EffectActualyPlay = false;
     }
 }
