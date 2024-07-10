@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 [Serializable]
 public class Item : MonoBehaviour
@@ -10,6 +11,7 @@ public class Item : MonoBehaviour
     public Sprite spriteSpell;
     public float spawnRate;
     public float speed;
+    public UnityEvent EventOnClick;
 
 
     private float treshold = 2;
@@ -26,27 +28,38 @@ public class Item : MonoBehaviour
             Destroy(gameObject);
     }
 
-    private void OnMouseOver()
+    private void OnTriggerStay2D(Collider2D other)
     {
-        if (Input.GetMouseButtonDown(0))
+        if (other.tag == "Cursor")
         {
-            SpellManager.instance.SetInvotory(spell, Type.Player1, spriteSpell);
-            Debug.Log("Pressed left click.");
-        }
-        if (Input.GetMouseButtonDown(1))
-        {
-            SpellManager.instance.SetInvotory(spell, Type.Player2, spriteSpell);
-            Debug.Log("Pressed right click.");
+            if (Input.GetMouseButtonDown(0))
+            {
+                SpellManager.instance.SetInvotory(spell, Type.Player1, spriteSpell);
+                EventOnClick.Invoke();
+                Debug.Log("Pressed left click.");
+            }
+            if (Input.GetMouseButtonDown(1))
+            {
+                SpellManager.instance.SetInvotory(spell, Type.Player2, spriteSpell);
+                EventOnClick.Invoke();
+                Debug.Log("Pressed right click.");
+            }
         }
     }
 
-    private void OnMouseEnter()
+    private void OnTriggerEnter2D(Collider2D other)
     {
-        SpellManager.instance.AddNbOver(1);
+        if (other.tag == "Cursor")
+        {
+            SpellManager.instance.AddNbOver(1);
+        }
     }
-    private void OnMouseExit()
+    private void OnTriggerExit2D(Collider2D other)
     {
-        SpellManager.instance.AddNbOver(-1);
+        if (other.tag == "Cursor")
+        {
+            SpellManager.instance.AddNbOver(-1);
+        }
     }
 
 }

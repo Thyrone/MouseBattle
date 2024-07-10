@@ -44,6 +44,9 @@ TagManager:
   - name: Spell
     uniqueID: 3302519031
     locked: 0
+  - name: Particle
+    uniqueID: 104596683
+    locked: 0
   - name: UI
     uniqueID: 1051475923
     locked: 0

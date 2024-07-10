@@ -22,6 +22,8 @@ public class ZoneManager : MonoBehaviour
 
     public TMP_Text VictoryText;
 
+    public Color Player1Color;
+    public Color Player2Color;
 
     private void Awake()
     {

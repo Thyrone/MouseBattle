@@ -7,7 +7,8 @@ public class SpawnMult : MonoBehaviour
 
     [SerializeField]
     private List<BonusZone> BonusToDrop = new List<BonusZone>();
-
+    [SerializeField]
+    private float bound = 10f;
     public bool StartBool = false;
     private float targetTime;
 
@@ -40,8 +41,8 @@ public class SpawnMult : MonoBehaviour
 
     public void DropRandomBonus()
     {
-        float spawnX = UnityEngine.Random.Range(screenLeft, screenRight);
-        float spawnY = UnityEngine.Random.Range(screenDown, screenUp);
+        float spawnX = UnityEngine.Random.Range(screenLeft + bound, screenRight - bound);
+        float spawnY = UnityEngine.Random.Range(screenDown + bound, screenUp - bound);
         Vector3 spawnPosition = new Vector3(spawnX, spawnY, 0);
 
         Instantiate(BonusToDrop[GetRandomSpawn()].gameObject, spawnPosition, Quaternion.identity);
