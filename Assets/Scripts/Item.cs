@@ -16,6 +16,8 @@ public class Item : MonoBehaviour
 
     private float treshold = 2;
     private float screenDown;
+
+    private bool mouseInObject = false;
     void Start()
     {
         screenDown = Camera.main.ScreenToWorldPoint(new Vector3(Screen.height, 0, 0)).y - treshold;
@@ -26,11 +28,8 @@ public class Item : MonoBehaviour
     {
         if (transform.position.y < screenDown)
             Destroy(gameObject);
-    }
 
-    private void OnTriggerStay2D(Collider2D other)
-    {
-        if (other.tag == "Cursor")
+        if (mouseInObject)
         {
             if (Input.GetMouseButtonDown(0))
             {
@@ -44,14 +43,16 @@ public class Item : MonoBehaviour
                 EventOnClick.Invoke();
                 Debug.Log("Pressed right click.");
             }
-            Debug.Log("Cursor in Item");
+
         }
+
     }
 
     private void OnTriggerEnter2D(Collider2D other)
     {
         if (other.tag == "Cursor")
         {
+            mouseInObject = true;
             SpellManager.instance.AddNbOver(1);
         }
     }
@@ -59,6 +60,7 @@ public class Item : MonoBehaviour
     {
         if (other.tag == "Cursor")
         {
+            mouseInObject = false;
             SpellManager.instance.AddNbOver(-1);
         }
     }

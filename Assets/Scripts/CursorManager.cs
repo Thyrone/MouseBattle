@@ -11,6 +11,10 @@ public class CursorManager : MonoBehaviour
     public float speed = 0.1f;
     private float initalSpeed;
     private bool invert = false;
+
+    private Rigidbody2D rb;
+    private float screenLeft, screenRight, screenUp, screenDown;
+
     private void Awake()
     {
         if (instance != null && instance != this)
@@ -33,7 +37,11 @@ public class CursorManager : MonoBehaviour
         initalSpeed = speed;
         // Initialiser la position de l'objet
         objectPosition = transform.position;
-
+        rb = GetComponent<Rigidbody2D>();
+        screenLeft = Camera.main.ScreenToWorldPoint(new Vector3(0, 0, 0)).x;
+        screenRight = Camera.main.ScreenToWorldPoint(new Vector3(Screen.width, 0, 0)).x;
+        screenUp = Camera.main.ScreenToWorldPoint(new Vector3(0, Screen.height, 0)).y;
+        screenDown = Camera.main.ScreenToWorldPoint(new Vector3(0, 0, 0)).y;
     }
 
     void Update()
@@ -63,6 +71,7 @@ public class CursorManager : MonoBehaviour
 
         // Mettez à jour la position de l'objet
         transform.position = objectPosition;
+        // rb.MovePosition(rb.position + objectPosition * Time.deltaTime);
     }
 
     public void SetInitalSpeed()
