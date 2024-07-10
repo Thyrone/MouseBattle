@@ -15,19 +15,43 @@ public enum SpellName
 
 public class SpellManager : MonoBehaviour
 {
-
+    [Header("Refs")]
     public Image ImageLeftInventory;
     public Image ImageRightInventory;
-    public SpellName LeftClickInventory;
-    public SpellName RightClickInventory;
 
+
+    [Header("Forces")]
+
+    [SerializeField]
+    private float speedUpForce;
+    [SerializeField]
+    private float slowDownForce;
+
+    [SerializeField]
+    private float directionForce;
+
+    [Header("Times (in sec)")]
+    [SerializeField]
+    private float speedUpTime;
+    [SerializeField]
+    private float slowDownTime;
+
+    [SerializeField]
+    private float directionTime;
+
+    [SerializeField]
+    private float invertTime;
+
+    private SpellName LeftClickInventory;
+    private SpellName RightClickInventory;
     private bool EffectActualyPlay = false;
-    public static SpellManager instance;
 
     private int nbOver = 0;
 
     private Sprite emptyRightSprite;
     private Sprite emptyRLeftSprite;
+
+    public static SpellManager instance;
     private void Awake()
     {
         if (instance != null && instance != this)
@@ -130,22 +154,27 @@ public class SpellManager : MonoBehaviour
         switch (_spell)
         {
             case SpellName.InvertMouse:
-                yield return InvertMouse(5);
+                yield return InvertMouse(invertTime);
                 yield return null;
                 break;
 
             case SpellName.SpeedUp:
-                yield return SpeedModify(1.1f, 5);
+                yield return SpeedModify(speedUpForce, speedUpTime);
                 yield return null;
                 break;
 
             case SpellName.LeftDirection:
-                yield return MoveCursorToDirectionCrt(Vector3.left, 10, 5);
+                yield return MoveCursorToDirectionCrt(Vector3.left, directionForce, directionTime);
+                yield return null;
+                break;
+
+            case SpellName.RightDirection:
+                yield return MoveCursorToDirectionCrt(Vector3.right, directionForce, directionTime);
                 yield return null;
                 break;
 
             case SpellName.SlowMoose:
-                yield return SpeedModify(0.01f, 5);
+                yield return SpeedModify(slowDownForce, slowDownTime);
                 yield return null;
                 break;
 

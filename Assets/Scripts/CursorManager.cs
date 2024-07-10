@@ -7,7 +7,7 @@ public class CursorManager : MonoBehaviour
 {
     public static CursorManager instance;
 
-    private Vector3 objectPosition;
+    private Vector2 objectPosition;
     public float speed = 0.1f;
     private float initalSpeed;
     private bool invert = false;
@@ -64,13 +64,21 @@ public class CursorManager : MonoBehaviour
 
         if (!invert)
             // Appliquez le delta à la position de l'objet
-            objectPosition += new Vector3(mouseDeltaX, mouseDeltaY, 0) * speed;
+            objectPosition += new Vector2(mouseDeltaX, mouseDeltaY) * speed;
         else
-            objectPosition += new Vector3(-mouseDeltaX, -mouseDeltaY, 0) * speed;
+            objectPosition += new Vector2(-mouseDeltaX, -mouseDeltaY) * speed;
 
 
-        // Mettez à jour la position de l'objet
-        transform.position = objectPosition;
+        if (objectPosition.x > screenLeft && objectPosition.x < screenRight
+         && objectPosition.y > screenDown && objectPosition.y < screenUp)
+        {            // Mettez à jour la position de l'objet
+            transform.position = objectPosition;
+        }
+        else
+        {
+            objectPosition = transform.position;
+        }
+
         // rb.MovePosition(rb.position + objectPosition * Time.deltaTime);
     }
 
@@ -91,7 +99,7 @@ public class CursorManager : MonoBehaviour
 
     public Vector3 GetCursorPosition()
     {
-        return objectPosition;
+        return new Vector3(objectPosition.x, objectPosition.y, 0);
     }
 
     public void SetCursorPosition(Vector3 _position)
