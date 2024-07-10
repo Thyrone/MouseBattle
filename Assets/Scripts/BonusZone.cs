@@ -13,19 +13,23 @@ public class BonusZone : MonoBehaviour
     {
         DelayRemove();
     }
-    private void OnMouseOver()
+    private void OnTriggerStay2D(Collider2D other)
     {
+        if(other.tag == "Cursor") 
+        {
+        
         if (Input.GetMouseButtonDown(0))
         {
-            ZoneManager.instance.MoveZoneBonus(BonusMovement);
+            ZoneManager.instance.MoveZoneBonus(-BonusMovement);
             Destroy(gameObject);
         }
         if (Input.GetMouseButtonDown(1))
         {
             ZoneManager.instance.MoveZoneBonus(BonusMovement);
             Destroy(gameObject);
-
         }
+        }
+        
     }
 
     IEnumerator DelayRemove()
